@@ -13,9 +13,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+RUN mkdir -p /app/db /app/media /app/staticfiles
+
 RUN python manage.py collectstatic --noinput
 
-RUN adduser --disabled-password --gecos "" appuser
+RUN adduser --disabled-password --gecos "" appuser \
+    && chown -R appuser:appuser /app/db /app/media /app/staticfiles
 USER appuser
 
 EXPOSE 8000
